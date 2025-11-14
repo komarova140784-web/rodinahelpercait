@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Поддержка Rodina Helper</title>
+  <style>
+    :root {
+      --primary: #667eea;
+      --secondary: #00c8ff;
+      --accent: #764ba2;
+      --danger: #f44336;
+      --warning: #ff9800;
+      --success: #4caf50;
+      --dark: #121224;
+      --light: #f8f9fa;
+      --card-padding: 24px;
+      --section-margin: 32px 0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.92);
+      background: linear-gradient(135deg, #121224, #0a0a14, #1a1a32) fixed;
+      background-size: 400% 400%;
+      animation: bg-animate 15s ease infinite;
+      min-height: 100vh;
+      padding: 0 16px;
+    }
+
+    @keyframes bg-animate {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 0 24px;
+    }
+
+    .logo {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(102, 126, 234, 0.3);
+      animation: pulse 2s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      color: var(--primary);
+      text-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin: 32px 0 18px;
+      color: var(--primary);
+      position: relative;
+    }
+
+    h2::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    p {
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.92em;
+      color: #e0e0e0;
+      border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 32px;
+    }
+
+    nav a {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    nav .active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    nav .active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      background: var(--secondary);
+      border-radius: 50%;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: var(--card-padding);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        0 0 2px rgba(102, 126, 234, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin: var(--section-margin);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.25),
+        0 0 3px rgba(102, 126, 234, 0.4);
+    }
+
+    /* FAQ */
+    .faq-question {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background: rgba(102, 126, 234, 0.1);
+      border-left: 3px solid var(--secondary);
+      padding-left: calc(14px - 3px);
+      transform: translateX(2px);
+      transition: all 0.3s ease;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
+      margin-top: 8px;
+      padding-left: 16px;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.85);
+      border-left: 2px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 400px;
+      opacity: 1;
+      padding-top: 12px;
+      transition: max-height 0.5s ease-in, opacity 0.4s ease-in;
+    }
+
+
+    /* Кнопки */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+      box-shadow: 0 4px 14px rgba(102, 126, 234, 0.25);
+    }
+
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .btn.secondary {
+      background: linear-gradient(135deg, #00c8ff, #0088cc);
+    }
+
+    .btn.danger {
+      background: linear-gradient(135deg, #f44336, #d32f2f);
+    }
+
+    /* Контакты */
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 400px;
+      margin: 24px auto;
+    }
+
+    /* Юридическая информация */
+    .legal ul {
+      margin-left: 20px;
+      margin-top: 12px;
+      list-style-type: disc;
+    }
+
+    .legal p {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.75);
+      margin-top: 18px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 40px;
+      backdrop-filter: blur(10px);
+    }
+
+    footer a {
+      color: var(--secondary);
+      margin: 0 12px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: var(--primary);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.4rem; }
+
+
+      .card { padding: 20px; }
+      nav { flex-direction: column; align-items: center; gap: 16px; }
+      .contact-links { max-width: 100%; margin: 20px 0; }
+      footer { padding: 30px 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles"></div>
+
+  <div class="container">
+    <header>
+      <div class="logo">
+        <img src="logo.png" alt="Логотип Rodina Helper">
+      </div>
+      <h1>Поддержка Rodina Helper</h1>
+      <p>Решим любые вопросы по работе скрипта быстро и эффективно.</p>
+    </header>
+
+
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="download.html">Скачать</a>
+      <a href="support.html" class="active">Поддержка</a>
+    </nav>
+
+    <main>
+      <!-- Контакты -->
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            </svg>
+          </a>
+          <a href="https://vk.com/rodina_helperspouser" class="btn primary">
+            VK: vk.com/rodina_helperspouser
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Устранение неполадок -->
+    <section style="background: rgba(102, 126, 234, 0.05);">
+      <div class="card">
+        <h2>Устранение неполадок</h2>
+        <ul>
+          <li><strong>Ошибка:</strong> обратитесь в поддержку</li>
+        </ul>
+
+        <div style="margin-top: 24px;">
+          <h3 style="color: var(--danger);">Критические ошибки</h3>
+          <p>Если скрипт полностью не запускается:</p>
+          <ol>
+            <li>Перезагрузите все скрипты (<kbd>Ctrl + R</kbd>).</li>
+            <li>Перезайдите в игру.</li>
+            <li>Проверьте целостность скачанных файлов.</li>
+            <li>Свяжитесь с поддержкой.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Юридическая информация -->
+    <section>
+      <div class="card legal">
+        <h2>Юридическая информация</h2>
+        <p><strong>Rodina Helper</strong> — неофициальный инструмент для упрощения игровых процессов. Мы не связаны с разработчиками игры.</p>
+        
+        <h3>Ограничение ответственности:</h3>
+        <ul>
+          <li>Мы не несём ответственности за потерю игровых данных.</li>
+          <li>Не гарантируем совместимость с другими скриптами.</li>
+          <li>Не контролируем изменения в игровой механике.</li>
+        </ul>
+
+
+        <p>Используйте скрипт на свой страх и риск. Рекомендуется делать резервные копии важных файлов.</p>
+      </div>
+    </section>
+  </main>
+
+
+  <footer>
+    <p>© 2025 <span style="color: var(--primary);">Andrey_Fil (MTG)</span> | Rodina Helper</p>
+    <p>
+      <a href="index.html">Главная</a> ·
+      <a href="download.html">Скачать</a> ·
+      <a href="#">Документация</a>
+    </p>
+  </footer>
+</div>
+
+<script>
+  function toggleFaq(element) {
+    const item = element.parentElement;
+    const isOpen = item.classList.contains('open');
+
+    // Закрываем все открытые вопросы
+    document.querySelectorAll('.faq-item.open').forEach(openItem => {
+      openItem.classList.remove('open');
+    });
+
+    // Открываем текущий, если он был закрыт
+    if (!isOpen) {
+      item.classList.add('open');
+    }
+  }
+
+  // Инициализация: закрыть все ответы при загрузке
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.faq-answer').forEach(answer => {
+      answer.style.maxHeight = '0';
+      answer.style.opacity = '0';
+    });
+  });
+</script>
+</body>
+</html>
